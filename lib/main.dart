@@ -1,37 +1,21 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const RepoViewer());
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class RepoViewer extends StatelessWidget {
+  const RepoViewer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Repo Viewer',
+      title: 'RepoViewer',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyHomePage(title: 'Repo Viewer Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: Container(),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Repo Viewer')),
+        body: const Center(
+          child: Text('Hello GitHub'),
+        ),
+      ),
     );
   }
 }
