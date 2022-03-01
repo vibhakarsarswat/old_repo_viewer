@@ -7,6 +7,14 @@ class SecureCredentialsStorage implements CredentialsStorage {
 
   SecureCredentialsStorage(this._storage);
 
+  // declaring a private key
+  static const _key = 'oauth2_credentials';
+
+  @override
+  Future<void> save(Credentials credentials) {
+    return _storage.write(key: _key, value: credentials.toJson());
+  }
+
   @override
   Future<void> clear() {
     // TODO: implement clear
@@ -18,10 +26,10 @@ class SecureCredentialsStorage implements CredentialsStorage {
     // TODO: implement read
     throw UnimplementedError();
   }
-
-  @override
-  Future<void> save(Credentials credentials) {
-    // TODO: implement save
-    throw UnimplementedError();
-  }
 }
+
+/*Notes
+**********************
+  1. In 'save' method, for '_storage.write' we have used 'credentials.toJson()' for 'value' param,
+  as it needs to be a String, and 'Credentials' has an inbuilt 'toJson()' method available.
+*/
