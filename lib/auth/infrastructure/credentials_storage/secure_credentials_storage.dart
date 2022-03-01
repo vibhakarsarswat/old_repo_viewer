@@ -39,8 +39,8 @@ class SecureCredentialsStorage implements CredentialsStorage {
 
   @override
   Future<void> clear() {
-    // TODO: implement clear
-    throw UnimplementedError();
+    _cachedCredentials = null;
+    return _storage.delete(key: _key);
   }
 }
 
