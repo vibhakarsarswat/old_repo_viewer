@@ -7,23 +7,39 @@ class SecureCredentialsStorage implements CredentialsStorage {
 
   SecureCredentialsStorage(this._storage);
 
-  // declaring a private key
+  // declaring a private variable to be used to store key values
   static const _key = 'oauth2_credentials';
+
+  // declaring a nullable variable to store 'cached credentials'
+  Credentials? _cachedCredentials;
 
   @override
   Future<void> save(Credentials credentials) {
+    _cachedCredentials = credentials;
     return _storage.write(key: _key, value: credentials.toJson());
+  }
+
+  @override
+  Future<Credentials?> read() async {
+    if (_cachedCredentials != null) {
+      return _cachedCredentials;
+    }
+
+    final json = await _storage.read(key: _key);
+    if (json == null) {
+      return null;
+    }
+
+    try {
+      return _cachedCredentials = Credentials.fromJson(json);
+    } on FormatException {
+      return null;
+    }
   }
 
   @override
   Future<void> clear() {
     // TODO: implement clear
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Credentials?> read() {
-    // TODO: implement read
     throw UnimplementedError();
   }
 }
