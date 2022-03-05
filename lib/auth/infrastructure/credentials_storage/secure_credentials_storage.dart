@@ -46,6 +46,7 @@ class SecureCredentialsStorage implements CredentialsStorage {
 
 /*Notes
 **********************
-  1. In 'save' method, for '_storage.write' we have used 'credentials.toJson()' for 'value' param,
-  as it needs to be a String, and 'Credentials' has an inbuilt 'toJson()' method available.
+  1. In 'save' method, for '_storage.write' we have used 'credentials.toJson()'
+  * instead of only 'credentials' for the 'value' param, as it needs to be a String,
+  * and 'Credentials' has an inbuilt 'toJson()' method available.
 */
