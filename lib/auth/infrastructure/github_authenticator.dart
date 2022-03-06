@@ -1,5 +1,7 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:oauth2/oauth2.dart';
+import 'package:repo_viewer/auth/domain/auth_failure.dart';
 import 'package:repo_viewer/auth/infrastructure/credentials_storage/credentials_storage.dart';
 
 class GithubAuthenticator {
@@ -39,6 +41,23 @@ class GithubAuthenticator {
 
   Uri getAuthorizationUrl(AuthorizationCodeGrant grant) {
     return grant.getAuthorizationUrl(redirectEndpoint, scopes: scopes);
+  }
+
+  Future<Either<AuthFailure, Unit>> handleAuthorizationResponse(
+    AuthorizationCodeGrant grant,
+    Map<String, String> queryParams,
+  ) async {
+    try {
+      final httpClient = await grant.handleAuthorizationResponse(queryParams);
+      await _credentialsStorage.save(httpClient.credentials);
+      return right(unit); // 'unit' is same as 'void'
+    } on FormatException {
+      return left(const AuthFailure.server());
+    } on AuthorizationException catch (e) {
+      return left(AuthFailure.server('${e.error}: ${e.description}'));
+    } on PlatformException {
+      return left(const AuthFailure.storage());
+    }
   }
 }
 
